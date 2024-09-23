@@ -1,4 +1,5 @@
 import numpy as np
+from datetime import datetime
 
 def reduce_mem_usage(df):
     '''
@@ -45,3 +46,43 @@ def reduce_mem_usage(df):
     print('Decreased by {:.1f}%'.format(100 * (start_mem - end_mem) / start_mem))
     return df
 
+
+def extract_date_feature(date):
+    date = datetime.strptime(date, "%Y-%m-%d")
+    try:
+        date = pd.to_datetime(date)
+    except Exception as e:
+        raise e
+
+    # Extract features from the date
+    month = date.month
+    weekday = date.weekday()
+
+    return month, weekday
+    
+    
+
+def extract_item_feature(item_id):
+    category_encoding = {
+        'FOODS': 0,
+        'HOBBIES': 1,
+        'HOUSEHOLDS':2
+    }
+    category, department, item = item_id.split('_')
+
+    return int(department), category_encoding[category], int(item) 
+
+def extract_store_feature(store_id):
+    state_encoding = {
+        'CA' : 0,
+        'TX' : 1,
+        'WI' : 2
+    }
+    state, store_num = store_id.split("_")
+    return state_encoding[state], int(store_num)
+
+def extract_features(date, store_id, item_id):
+    month, weekday = extract_date_feature(date)
+    state, store_num = extract_store_feature(store_id)
+    department, category, item = extract_item_feature(item_id)
+    return np.array([[month, weekday, state, store_num, category, department, item]])
