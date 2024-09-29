@@ -36,6 +36,7 @@ Applying Machine Learning as a Service for Time series forcasting for sales of a
 │
 ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
 │                         generated with `pip freeze > requirements.txt`
+├── src                <- Custom python package for handling, preprocessing and transforming data.
 │
 ├── setup.cfg          <- Configuration file for flake8
 │
